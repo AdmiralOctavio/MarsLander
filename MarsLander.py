@@ -10,7 +10,7 @@ height = [20]
 
 def calculateThings():
     g0 = -3.711 #m/s^2
-    kv = 0.005 #gain
+    kv = 0.05 #gain
     CdS = 4.92 #m^2
     Ve = 4400 #m/s
     m = 699 #kg
@@ -19,7 +19,7 @@ def calculateThings():
     ɣ = [0.349066] #20deg in rad
     dt = 0.002 #seconds
     time = [0]
-    ht = 10 #Thruster deployment
+    ht = 3 #Thruster deployment
     ṁ = [5]
     h=20
     s = [0]
@@ -41,7 +41,7 @@ def calculateThings():
             ṁ.append(5)
 
         elif 0.003<h<ht: 
-            ṁ.append(( -m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1]))
+            ṁ.append(min(5,( -m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
             T = ṁ[-1]*Ve
             ΣFʸ = m_tot[-1]*g0 + Fd*math.sin(ɣ[-1]) + T*math.sin(ɣ[-1])
             m_tot.append(m_tot[-1] - ṁ[-1]*dt)
@@ -59,7 +59,7 @@ def calculateThings():
 
         height.append(height[-1] + (velocity_y[-1]*dt)/1000)
         s.append(s[-1]+ (velocity_x[-1]*dt)/1000)
-        ɣ.append(math.atan(-velocity_y[-1]/velocity_x[-1]))
+        ɣ.append(math.atan2(-velocity_y[-1], velocity_x[-1]))
         time.append(time[-1] + dt)
 
     figure, axis = plt.subplots(2, 3) 
