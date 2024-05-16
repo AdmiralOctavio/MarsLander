@@ -16,11 +16,11 @@ def calculateThings():
     m = 699 #kg
     m_fuel = 70 #kg
     m_tot = [m+m_fuel]
-    ɣ = [0.349066] #20deg in rad
+    ɣ = [-0.349066] #20deg in rad
     dt = 0.002 #seconds
     time = [0]
-    ht = 3 #Thruster deployment
-    ṁ = [5]
+    ht = 10 #Thruster deployment
+    ṁ = [0]
     h=20
     s = [0]
 
@@ -37,13 +37,13 @@ def calculateThings():
         Fd = 1/2 * modV[-1]**2 * ρ * CdS 
         
         if h>ht: 
-            ΣFʸ = (m_tot[-1]) * g0 + Fd*math.sin(ɣ[-1]) 
-            ṁ.append(5)
+            ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(ɣ[-1]) 
+            ṁ.append(0)
 
         elif 0.003<h<ht: 
             ṁ.append(min(5,( -m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
             T = ṁ[-1]*Ve
-            ΣFʸ = m_tot[-1]*g0 + Fd*math.sin(ɣ[-1]) + T*math.sin(ɣ[-1])
+            ΣFʸ = m_tot[-1]*g0 - Fd*math.sin(ɣ[-1]) - T*math.sin(ɣ[-1])
             m_tot.append(m_tot[-1] - ṁ[-1]*dt)
 
         else: 
@@ -59,7 +59,7 @@ def calculateThings():
 
         height.append(height[-1] + (velocity_y[-1]*dt)/1000)
         s.append(s[-1]+ (velocity_x[-1]*dt)/1000)
-        ɣ.append(math.atan2(-velocity_y[-1], velocity_x[-1]))
+        ɣ.append(math.atan2(velocity_y[-1], velocity_x[-1]))
         time.append(time[-1] + dt)
 
     figure, axis = plt.subplots(2, 3) 
@@ -67,7 +67,7 @@ def calculateThings():
     axis[0,0].plot(s, height)
     axis[0, 0].set_title("Trajectory") 
 
-    axis[0,1].plot(velocity_y, velocity_x)
+    axis[0,1].plot(modV, height)
     axis[0, 1].set_title("Speed") 
 
     axis[0,2].plot(time, ṁ)
