@@ -11,7 +11,8 @@ def marsAtm(h, atmList):
     index = math.floor(h/10)+2
     h1 = atmList[index].split()[0]
     for i in range(1, 4):
-        y1, y2 = atmList[index].split()[i], atmList[index+1].split()[i]
+        try: y1, y2 = atmList[index].split()[i], atmList[index+1].split()[i]
+        except: break
         output.append(interpolate(h, int(h1), float(y1), float(y2)))
     output.append(191.84 * float(atmList[index].split()[1]) * float(atmList[index].split()[2])) #Pressure
     return output
