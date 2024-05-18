@@ -25,7 +25,6 @@ def calculateThings():
     s = [0]
 
     while h>0:
-
         h = height[-1] #km
         #Catches negative height error
         try: ρ = atm.marsAtm(h, atm.marsinit())[1]
@@ -64,7 +63,6 @@ def calculateThings():
         height.append(height[-1] + (velocity_y[-1]*dt)/1000)
         s.append(s[-1]+ (velocity_x[-1]*dt)/1000)
         ɣ.append(math.degrees(math.atan2(velocity_y[-1], velocity_x[-1])))
-        
 
         time.append(time[-1] + dt)
 
@@ -75,13 +73,11 @@ def calculateThings():
     axis[0, 0].set_xlabel("X Displacement")
     axis[0, 0].set_ylabel("Height")
 
-
     axis[0,1].plot(modV, height)
     axis[0, 1].set_title("Speed") 
     axis[0, 1].set_xlabel("Speed")
     axis[0, 1].set_ylabel("Height")
     
-
     axis[0,2].plot(time, ṁ)
     axis[0, 2].set_title("ṁ vs time") 
     axis[0, 2].set_xlabel("Time")
@@ -102,5 +98,4 @@ def calculateThings():
     axis[1, 2].set_xlabel("Time")
     axis[1, 2].set_ylabel("Flight path angle")
     plt.show()
-
 calculateThings()
