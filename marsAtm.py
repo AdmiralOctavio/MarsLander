@@ -22,4 +22,4 @@ def marsAtm(h, atmList):
     output.append(191.84 * float(atmList[index].split()[1]) * float(atmList[index].split()[2])) #Pressure
 
     return output
-print(marsAtm(3, marsinit()))
+#print(marsAtm(3, marsinit()))

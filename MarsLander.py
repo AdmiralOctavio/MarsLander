@@ -17,9 +17,9 @@ def calculateThings():
     m_fuel = 70 #kg
     m_tot = [m+m_fuel]
     ɣ = [-0.349066] #20deg in rad
-    dt = 0.002 #seconds
+    dt = 0.007 #seconds
     time = [0]
-    ht = 10 #Thruster deployment
+    ht = 10 #Thruster deployment altitude, km
     ṁ = [0]
     h=20
     s = [0]
@@ -40,11 +40,15 @@ def calculateThings():
             ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(ɣ[-1]) 
             ṁ.append(0)
 
-        elif 0.003<h<ht: 
+        elif 0.003<h<ht and m_tot[-1] > 699: 
+
             ṁ.append(min(5,( -m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
+
             T = ṁ[-1]*Ve
-            ΣFʸ = m_tot[-1]*g0 - Fd*math.sin(ɣ[-1]) - T*math.sin(ɣ[-1])
+
             m_tot.append(m_tot[-1] - ṁ[-1]*dt)
+
+            ΣFʸ = m_tot[-1]*g0 - Fd*math.sin(ɣ[-1]) - T*math.sin(ɣ[-1])
 
         else: 
             ΣFʸ = m_tot[-1]*g0
