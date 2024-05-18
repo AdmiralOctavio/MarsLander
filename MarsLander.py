@@ -50,6 +50,7 @@ def calculateThings():
             m_tot.append(m_tot[-1] - ṁ[-1]*dt)
 
             ΣFʸ = (m_tot[-1]) * g0 - (Fd+T) *math.sin(math.radians(ɣ[-1]))
+            
             ΣFₓ = -Fd*math.cos(math.radians(ɣ[-1]))- T*math.cos((math.radians(ɣ[-1])))
             
 
