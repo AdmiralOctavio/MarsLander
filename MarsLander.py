@@ -19,7 +19,7 @@ def calculateThings():
     ɣ = [-20] #20deg in rad
     dt = 0.01 #seconds
     time = [0]
-    ht = 5 #Thruster deployment altitude, km 1.7
+    ht = 1.771 #Thruster deployment altitude, km 1.7
     ṁ = [0]
     h=20
     s = [0]
@@ -37,25 +37,26 @@ def calculateThings():
         Fd = 1/2 * modV[-1]**2 * ρ * CdS 
         
         if h>ht: 
-            ΣFʸ = (m_tot[-1]) * g0 - Fd*math.cos(ɣ[-1]*0.0174533) #
+            ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(math.radians(ɣ[-1])) #
             ṁ.append(0)
-            ΣFₓ = -Fd*math.cos(ɣ[-1]*0.0174533)
+            ΣFₓ = -Fd*math.cos(math.radians(ɣ[-1]))
 
         elif 0.0003<h<ht and m_tot[-1] > 699: 
 
-            ṁ.append(min(5,( -m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
+            ṁ.append(min(5,( m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
 
             T = ṁ[-1]*Ve
 
             m_tot.append(m_tot[-1] - ṁ[-1]*dt)
 
-            ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(ɣ[-1]*0.0174533) - T*math.sin(ɣ[-1]*0.0174533)
-            ΣFₓ = -Fd*math.cos(ɣ[-1])- T*math.cos(ɣ[-1]*0.0174533)
-            print(str(T) + "N | " + str(ṁ[-1]) + "kg/s")
+            ΣFʸ = (m_tot[-1]) * g0 - (Fd+T) *math.sin(math.radians(ɣ[-1]))
+            ΣFₓ = -Fd*math.cos(math.radians(ɣ[-1]))- T*math.cos((math.radians(ɣ[-1])))
+            
 
         else: 
             ΣFʸ = m_tot[-1]*g0
             ṁ.append(0)
+        print(str(Fd*math.cos(math.radians(ɣ[-1]))) + "N | " + str(ɣ[-1]) + "degrees")
 
         
         aʸ = ΣFʸ/(m_tot[-1])
@@ -66,7 +67,8 @@ def calculateThings():
 
         height.append(height[-1] + (velocity_y[-1]*dt)/1000)
         s.append(s[-1]+ (velocity_x[-1]*dt)/1000)
-        ɣ.append(57.2958 * math.atan2(velocity_y[-1], velocity_x[-1])) #
+        ɣ.append(math.degrees(math.atan2(velocity_y[-1], velocity_x[-1])))
+        
 
         time.append(time[-1] + dt)
 
