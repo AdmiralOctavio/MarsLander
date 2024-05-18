@@ -36,30 +36,25 @@ def calculateThings():
         #Forces
         Fd = 1/2 * modV[-1]**2 * ρ * CdS 
         
-        if h>ht: 
-            ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(math.radians(ɣ[-1])) #
+        if h>ht or h<0.0003: 
+            ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(math.radians(ɣ[-1]))
+
             ṁ.append(0)
+
             ΣFₓ = -Fd*math.cos(math.radians(ɣ[-1]))
 
         elif 0.0003<h<ht and m_tot[-1] > 699: 
 
-            ṁ.append(min(5,( m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
+            ṁ.append(min(5,( -m_tot[-1] * g0) / Ve + kv * (-2-velocity_y[-1])))
 
             T = ṁ[-1]*Ve
 
             m_tot.append(m_tot[-1] - ṁ[-1]*dt)
 
             ΣFʸ = (m_tot[-1]) * g0 - (Fd+T) *math.sin(math.radians(ɣ[-1]))
-            
+
             ΣFₓ = -Fd*math.cos(math.radians(ɣ[-1]))- T*math.cos((math.radians(ɣ[-1])))
-            
 
-        else: 
-            ΣFʸ = m_tot[-1]*g0
-            ṁ.append(0)
-        print(str(Fd*math.cos(math.radians(ɣ[-1]))) + "N | " + str(ɣ[-1]) + "degrees")
-
-        
         aʸ = ΣFʸ/(m_tot[-1])
         aₓ = ΣFₓ/(m_tot[-1])
 
@@ -76,22 +71,36 @@ def calculateThings():
     figure, axis = plt.subplots(2, 3) 
 
     axis[0,0].plot(s, height)
-    axis[0, 0].set_title("Trajectory") 
+    axis[0, 0].set_title("Trajectory")
+    axis[0, 0].set_xlabel("X Displacement")
+    axis[0, 0].set_ylabel("Height")
+
 
     axis[0,1].plot(modV, height)
     axis[0, 1].set_title("Speed") 
+    axis[0, 1].set_xlabel("Speed")
+    axis[0, 1].set_ylabel("Height")
+    
 
     axis[0,2].plot(time, ṁ)
     axis[0, 2].set_title("ṁ vs time") 
+    axis[0, 2].set_xlabel("Time")
+    axis[0, 2].set_ylabel("Mass flowrate")
 
     axis[1,0].plot(time, height)
     axis[1, 0].set_title("height vs time") 
+    axis[1, 0].set_xlabel("Time")
+    axis[1, 0].set_ylabel("Height")
 
     axis[1,1].plot(time, modV)
     axis[1, 1].set_title("Speed vs time") 
+    axis[1, 1].set_xlabel("Time")
+    axis[1, 1].set_ylabel("Speed")
 
     axis[1,2].plot(time, ɣ)
     axis[1, 2].set_title("ɣ vs time") 
+    axis[1, 2].set_xlabel("Time")
+    axis[1, 2].set_ylabel("Flight path angle")
     plt.show()
 
 calculateThings()
