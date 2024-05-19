@@ -14,16 +14,15 @@ def calculateThings():
     CdS = 4.92 #m^2
     Ve = 4400 #m/s
     m = 699 #kg
-    m_fuel = 70 #kg
+    m_fuel = 69 #kg
     m_tot = [m+m_fuel]
     ɣ = [-20] #20deg in rad
-    dt = 0.01 #seconds
+    dt = 0.005 #seconds
     time = [0]
-    ht = 1.771 #Thruster deployment altitude, km 1.7
+    ht = 1.766 #Thruster deployment altitude, km 1.7
     ṁ = [0]
     h=20
     s = [0]
-
     while h>0:
         h = height[-1] #km
         #Catches negative height error
@@ -35,7 +34,7 @@ def calculateThings():
         #Forces
         Fd = 1/2 * modV[-1]**2 * ρ * CdS 
         
-        if h>ht or h<0.0003: 
+        if h>ht or h<0.0003 or m_tot[-1] < 699: 
             ΣFʸ = (m_tot[-1]) * g0 - Fd*math.sin(math.radians(ɣ[-1]))
 
             ṁ.append(0)
@@ -67,6 +66,8 @@ def calculateThings():
         time.append(time[-1] + dt)
 
     figure, axis = plt.subplots(2, 3) 
+    print("Landing velocity: " + str(modV[-1]) + "m/s\nLanding burn height: " + str(ht) + "km\nFuel mass remaining: " + str(m_tot[-1]-m) + "kg (original fuel mass = "
+          + str(m_fuel) + "kg)")
 
     axis[0,0].plot(s, height)
     axis[0, 0].set_title("Trajectory")
