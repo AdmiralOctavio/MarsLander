@@ -27,7 +27,7 @@ def calculateThings():
         h = height[-1] #km
         #Catches negative height error
         try: ρ = atm.marsAtm(h, atm.marsinit())[1]
-        except: print(h)
+        except ValueError: print(h)
 
         modV.append((velocity_y[-1]**2 + velocity_x[-1]**2)**0.5)
 
